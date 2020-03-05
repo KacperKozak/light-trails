@@ -1,0 +1,26 @@
+{
+  "name": "light-trails",
+  "version": "0.4.0",
+  "description": "The extendable TypeScript animation library",
+  "repository": "https://github.com/KacperKozak/light-trails",
+  "author": "Kacper Kozak",
+  "license": "MIT",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "rm -rf dist && rollup --config",
+    "watch": "rollup --config --watch",
+    "test": "jest"
+  },
+  "main": "dist/light-trails.esm.js",
+  "module": "dist/light-trails.esm.js",
+  "types": "dist/types/light-trails.esm.d.ts",
+  "devDependencies": {
+    "@types/jest": "^25.1.3",
+    "@wessberg/rollup-plugin-ts": "^1.2.19",
+    "core-js": "^3.6.4",
+    "jest": "^25.1.0",
+    "rollup": "^1.32.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "typescript": "^3.8.3"
+  }
+}
