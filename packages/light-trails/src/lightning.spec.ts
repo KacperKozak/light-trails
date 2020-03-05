@@ -1,18 +1,16 @@
 import 'core-js'
-import { animate, delay, fromTo, lightning, set, val } from './'
-
-/* eslint-disable no-undef */
+import { trail, delay, fromTo, lightTrails, set, val } from './'
 
 describe('lightning', () => {
     const values = { a: null, b: null }
 
-    const frames = animate(frameValues => Object.assign(values, frameValues), [
+    const mainTrail = trail(frameValues => Object.assign(values, frameValues), [
         delay(100),
         set({ a: [0, 1] }),
         fromTo({ b: val(10, 100) }, 100),
     ])
 
-    const anim = lightning(frames)
+    const anim = lightTrails(mainTrail)
 
     test('initial', () => {
         expect(values.a).toBe(null)

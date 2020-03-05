@@ -1,13 +1,13 @@
-import { FramesFunction } from '../types'
+import { SimpleTrailFunction } from '../types'
 
 interface CascadeOptions {
     offset: (index: number) => number
 }
 
 export const cascade = (
-    frames: FramesFunction[],
+    frames: SimpleTrailFunction[],
     options: CascadeOptions,
-): FramesFunction => startAt =>
+): SimpleTrailFunction => startAt =>
     frames.flatMap((frameFn, index) => {
         const offset = options.offset(index) + startAt
         return frameFn(offset)

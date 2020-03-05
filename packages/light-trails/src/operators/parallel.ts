@@ -1,3 +1,4 @@
-import { FramesFunction } from '../types'
-export const parallel = (frames: FramesFunction[]): FramesFunction => startAt =>
+import { SimpleTrailFunction } from '../types'
+
+export const parallel = (frames: SimpleTrailFunction[]): SimpleTrailFunction => startAt =>
     frames.flatMap(frameFn => frameFn(startAt))

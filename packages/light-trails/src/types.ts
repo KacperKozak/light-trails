@@ -5,7 +5,7 @@ export enum FrameType {
     Tween = 'Tween',
 }
 
-interface SerializedFrameStep {
+interface TrailFrameBase {
     type: FrameType
     startAt: number
     startIndex: number
@@ -14,34 +14,34 @@ interface SerializedFrameStep {
 
 export type Renderer = (values: Values) => void
 
-export interface SerializedFramePause extends SerializedFrameStep {
+export interface TrailFramePause extends TrailFrameBase {
     type: FrameType.Pause
     duration: 0
 }
 
-export interface SerializedFrameDelay extends SerializedFrameStep {
+export interface TrailFrameDelay extends TrailFrameBase {
     type: FrameType.Delay
 }
 
-export interface SerializedFrameSet extends SerializedFrameStep {
+export interface TrailFrameSet extends TrailFrameBase {
     type: FrameType.Set
     duration: 0
     values: SetValues
     renderer: Renderer
 }
 
-export interface SerializedFrameTween extends SerializedFrameStep {
+export interface TrailFrameTween extends TrailFrameBase {
     type: FrameType.Tween
     values: TweenValues
     renderer: Renderer
     easing: Easing
 }
 
-export type SerializedFrame =
-    | SerializedFrameSet
-    | SerializedFrameTween
-    | SerializedFramePause
-    | SerializedFrameDelay
+export type TrailFrame =
+    | TrailFrameSet
+    | TrailFrameTween
+    | TrailFramePause
+    | TrailFrameDelay
 
 export interface Values {
     [key: string]: any
@@ -57,10 +57,10 @@ export interface TweenValues {
 
 export type Easing = (p: number) => number
 
-export type FramesFunction = (startAt: number) => SerializedFrame[]
+export type SimpleTrailFunction = (startAt: number) => TrailFrame[]
 
-export type RenderOperatorFunction = (
+export type RenderTrailFunction = (
     startAt: number,
-) => (renderer: Renderer) => SerializedFrame[]
+) => (renderer: Renderer) => TrailFrame[]
 
-export type OperatorFunction = RenderOperatorFunction | FramesFunction
+export type TrailFunction = RenderTrailFunction | SimpleTrailFunction

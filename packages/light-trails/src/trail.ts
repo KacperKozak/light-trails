@@ -1,29 +1,29 @@
-import { FramesFunction, OperatorFunction, Renderer } from './types'
+import { SimpleTrailFunction, TrailFunction, Renderer } from './types'
 import { htmlElementRenderer } from './renderers/htmlElementRenderer'
 
-export const animate = (
+export const trail = (
     target: Renderer | HTMLElement | string,
-    operators: OperatorFunction[],
-): FramesFunction => {
+    operators: TrailFunction[],
+): SimpleTrailFunction => {
     const renderer = findRenderer(target)
 
     return startAt => {
         let offset = startAt
 
-        const serializedFrames = operators
+        const frames = operators
             .map(operator => {
-                let serialized = operator(offset)
+                let frame = operator(offset)
 
-                if (typeof serialized === 'function') {
-                    serialized = serialized(renderer)
+                if (typeof frame === 'function') {
+                    frame = frame(renderer)
                 }
 
-                offset += Math.max(...serialized.map(frame => frame.duration))
-                return serialized
+                offset += Math.max(...frame.map(frame => frame.duration))
+                return frame
             })
             .flat()
 
-        return serializedFrames
+        return frames
     }
 }
 

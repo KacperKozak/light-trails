@@ -1,10 +1,10 @@
 import { totalDuration } from './helpers'
-import { SerializedFrame, FramesFunction } from './types'
+import { TrailFrame, SimpleTrailFunction } from './types'
 import { render } from './timeline/render'
 import { findTextStepTime } from './timeline/findTextStepTime'
 import { prepareFrames } from './timeline/prepareFrames'
 
-export interface LightingInstance {
+export interface LightTrailsInstance {
     prepare: () => void
     play: () => void
     pause: () => void
@@ -12,8 +12,8 @@ export interface LightingInstance {
     getStatus(): LightingStatus
     total: number
     __dev: {
-        options: LightningOptions
-        serializedFrames: SerializedFrame[]
+        options: LightTrailsOptions
+        frames: TrailFrame[]
     }
 }
 
@@ -26,26 +26,26 @@ export interface LightingStatus {
     total: number
 }
 
-interface LightningOptions {
+interface LightTrailsOptions {
     onPlay?(): void
     onPause?(): void
     onComplete?(): void
     onUpdate?(): void
 }
 
-export const lightning = (
-    framesFunction: FramesFunction,
-    options: LightningOptions = {},
-): LightingInstance => {
+export const lightTrails = (
+    trailFunction: SimpleTrailFunction,
+    options: LightTrailsOptions = {},
+): LightTrailsInstance => {
     let currentTime = 0
     let currentTimeIndex = 0
     let playing = false
 
-    const serializedFrames = prepareFrames(framesFunction(0))
-    const total = totalDuration(serializedFrames)
+    const frames = prepareFrames(trailFunction(0))
+    const total = totalDuration(frames)
 
     const prepare = () => {
-        render(currentTime, currentTimeIndex, serializedFrames)
+        render(currentTime, currentTimeIndex, frames)
     }
 
     const seek = (time: number, offsetIndex = 0) => {
@@ -55,7 +55,7 @@ export const lightning = (
     }
 
     const updateOnCurrent = () => {
-        render(currentTime, currentTimeIndex, serializedFrames)
+        render(currentTime, currentTimeIndex, frames)
         options.onUpdate?.()
     }
 
@@ -81,7 +81,7 @@ export const lightning = (
                 currentTimeIndex,
                 currentTime + diff,
                 total,
-                serializedFrames,
+                frames,
             )
 
             currentTime = nextTime
@@ -127,6 +127,6 @@ export const lightning = (
         seek,
         total,
         getStatus,
-        __dev: { options, serializedFrames },
+        __dev: { options, frames },
     }
 }

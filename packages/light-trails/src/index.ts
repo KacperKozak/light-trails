@@ -1,6 +1,6 @@
 export * from './types'
-export * from './lightning'
-export * from './animate'
+export * from './lightTrails'
+export * from './trail'
 
 export * from './operators'
 export * from './values'

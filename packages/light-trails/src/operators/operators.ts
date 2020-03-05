@@ -1,9 +1,9 @@
 import { linear } from '../helpers'
 import {
     Easing,
-    FramesFunction,
+    SimpleTrailFunction,
     FrameType,
-    RenderOperatorFunction,
+    RenderTrailFunction,
     SetValues,
     TweenValues,
 } from '../types'
@@ -12,7 +12,7 @@ export const fromTo = (
     values: TweenValues,
     duration: number,
     easing: Easing = linear,
-): RenderOperatorFunction => startAt => renderer => [
+): RenderTrailFunction => startAt => renderer => [
     {
         type: FrameType.Tween,
         startAt,
@@ -24,7 +24,7 @@ export const fromTo = (
     },
 ]
 
-export const set = (values: SetValues): RenderOperatorFunction => startAt => renderer => [
+export const set = (values: SetValues): RenderTrailFunction => startAt => renderer => [
     {
         type: FrameType.Set,
         startAt,
@@ -35,7 +35,7 @@ export const set = (values: SetValues): RenderOperatorFunction => startAt => ren
     },
 ]
 
-export const delay = (duration: number): FramesFunction => startAt => [
+export const delay = (duration: number): SimpleTrailFunction => startAt => [
     {
         type: FrameType.Delay,
         startAt,
@@ -44,7 +44,7 @@ export const delay = (duration: number): FramesFunction => startAt => [
     },
 ]
 
-export const pause = (): FramesFunction => startAt => [
+export const pause = (): SimpleTrailFunction => startAt => [
     {
         type: FrameType.Pause,
         startAt,

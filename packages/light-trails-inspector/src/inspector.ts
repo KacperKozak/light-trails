@@ -1,4 +1,4 @@
-import { LightingInstance, shouldSkipFrame } from 'light-trails'
+import { LightTrailsInstance, shouldSkipFrame } from 'light-trails'
 import { createBarEl } from './el/createBarEl'
 import { createLineEl } from './el/createLineEl'
 import { createRootEl } from './el/createRootEl'
@@ -6,7 +6,7 @@ import { createSeekEl } from './el/createSeekEl'
 import { createStatusEl } from './el/createStatusEl'
 import { inspectorOptions } from './inspectorOptions'
 
-export const inspector = (anim: LightingInstance) => {
+export const inspector = (anim: LightTrailsInstance) => {
     let status = anim.getStatus()
 
     const rootEl = createRootEl(inspectorOptions)
@@ -42,7 +42,7 @@ export const inspector = (anim: LightingInstance) => {
 
     const render = () => {
         barsWrapperEl.innerHTML = ''
-        anim.__dev.serializedFrames.forEach(frame => {
+        anim.__dev.frames.forEach(frame => {
             barsWrapperEl.appendChild(
                 createBarEl(
                     frame,

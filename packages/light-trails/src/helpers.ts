@@ -1,4 +1,4 @@
-import { SerializedFrame } from './types'
+import { TrailFrame } from './types'
 
 const { pow, sin, max } = Math
 const PI = Math.PI
@@ -18,5 +18,5 @@ export const mapObjectValues = <T, R>(
 export const limit = (value: number, min = 0, max = 1) =>
     Math.min(Math.max(value, min), max)
 
-export const totalDuration = (frames: SerializedFrame[]): number =>
+export const totalDuration = (frames: TrailFrame[]): number =>
     max(...frames.map(frame => frame.startAt + frame.duration))

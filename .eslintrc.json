@@ -1,27 +1,23 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jest/globals": true
     },
+    "parser": "@typescript-eslint/parser",
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier",
-        "prettier/@typescript-eslint"
+        "prettier/@typescript-eslint",
+        "plugin:jest/recommended"
     ],
-    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "jest"],
     "parserOptions": {
         "ecmaFeatures": { "jsx": true },
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "settings": {
-        "react": {
-            "pragma": "React",
-            "version": "detect"
-        }
-    },
-    "plugins": ["@typescript-eslint"],
     "rules": {
         "no-console": "error",
         "for-direction": "off",

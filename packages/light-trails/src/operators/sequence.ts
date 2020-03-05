@@ -1,10 +1,13 @@
-import { FramesFunction } from '../types'
+import { SimpleTrailFunction } from '../types'
 import { totalDuration } from '../helpers'
-export const sequence = (frames: FramesFunction[]): FramesFunction => startAt => {
+
+export const sequence = (
+    frames: SimpleTrailFunction[],
+): SimpleTrailFunction => startAt => {
     let offset = startAt
     return frames.flatMap(frameFn => {
-        const serialized = frameFn(offset)
-        offset = totalDuration(serialized)
-        return serialized
+        const frame = frameFn(offset)
+        offset = totalDuration(frame)
+        return frame
     })
 }

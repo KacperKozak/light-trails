@@ -1,14 +1,14 @@
 import { limit, mapObjectValues } from '../helpers'
-import { SerializedFrame, FrameType } from '../types'
+import { TrailFrame, FrameType } from '../types'
 import { shouldSkipFrame } from './shouldSkipFrame'
 
 export const render = (
     currentTime: number,
     currentTimeIndex: number,
-    serializedFrames: SerializedFrame[],
+    frames: TrailFrame[],
 ) => {
-    for (let i = serializedFrames.length - 1; i >= 0; i--) {
-        const frame = serializedFrames[i]
+    for (let i = frames.length - 1; i >= 0; i--) {
+        const frame = frames[i]
         switch (frame.type) {
             case FrameType.Tween:
                 frame.renderer(mapObjectValues(frame.values, val => val(0)))
@@ -20,7 +20,7 @@ export const render = (
         }
     }
 
-    for (const frame of serializedFrames) {
+    for (const frame of frames) {
         if (shouldSkipFrame(currentTime, currentTimeIndex, frame)) continue
 
         switch (frame.type) {

@@ -1,4 +1,4 @@
-import { FrameType, SerializedFrame } from 'light-trails'
+import { FrameType, TrailFrame } from 'light-trails'
 import { InspectorOptions } from '../inspectorOptions'
 
 const bg: Record<FrameType, string> = {
@@ -9,7 +9,7 @@ const bg: Record<FrameType, string> = {
 }
 
 export const createBarEl = (
-    frame: SerializedFrame,
+    frame: TrailFrame,
     options: InspectorOptions,
     skipped: boolean,
 ) => {

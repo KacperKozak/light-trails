@@ -1,13 +1,13 @@
-import { SerializedFrame } from '../types'
+import { TrailFrame } from '../types'
 
 // @TODO make this immutable
-export const prepareFrames = (serializedFrames: SerializedFrame[]) => {
-    serializedFrames.sort((a, b) => a.startAt - b.startAt)
+export const prepareFrames = (frames: TrailFrame[]) => {
+    frames.sort((a, b) => a.startAt - b.startAt)
 
-    for (let i = 0; i < serializedFrames.length; i++) {
-        const frame = serializedFrames[i]
-        const prevFrame = serializedFrames[i - 1]
-        const nextFrame = serializedFrames[i + 1]
+    for (let i = 0; i < frames.length; i++) {
+        const frame = frames[i]
+        const prevFrame = frames[i - 1]
+        const nextFrame = frames[i + 1]
 
         if (prevFrame && prevFrame.startAt === frame.startAt) {
             frame.startIndex = prevFrame.startIndex! + 1
@@ -16,5 +16,5 @@ export const prepareFrames = (serializedFrames: SerializedFrame[]) => {
         }
     }
 
-    return serializedFrames
+    return frames
 }
