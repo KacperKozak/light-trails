@@ -1,5 +1,8 @@
 {
   "private": true,
+  "repository": "https://github.com/KacperKozak/light-trails",
+  "author": "Kacper Kozak",
+  "license": "MIT",
   "workspaces": [
     "packages/*"
   ],
@@ -33,5 +36,6 @@
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "wsrun": "^5.2.0"
-  }
+  },
+  "version": "0.4.1"
 }

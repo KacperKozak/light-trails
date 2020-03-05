@@ -3,31 +3,31 @@
 The extendable TypeScript animation library.
 
 ```
-yarn add @phenomenon/lightning
+yarn add light-trails
 
-npm install @phenomenon/lightning
+npm install light-trails
 ```
 
 ## Examples
 
 ```js
-import { lightning, animate, fromTo, delay, val } from '@phenomenon/lightning'
+import { lightTrails, trail, fromTo, delay, val } from 'light-trails'
 
-const frames = animate('#my-element', [
+const elementTrail = trail('#my-element', [
     fromTo({ opacity: val(0, 1) }, 400),
     delay(1000),
     fromTo({ opacity: val(1, 0) }, 400),
 ])
 
-lightning(frames).play()
+lightTrails(elementTrail).play()
 ```
 
 Using `parallel`, `cascade` or `sequence`.
 
 ```js
 import {
-    lightning,
-    animate,
+    lightTrails,
+    trail,
     parallel,
     fromTo,
     delay,
@@ -35,13 +35,13 @@ import {
     val,
     color,
     transform,
-} from '@phenomenon/lightning'
+} from 'light-trails'
 
-const bodyFrames = animate('body', [
+const bodyTrail = trail('body', [
     fromTo({ backgroundColor: color('#FF0000', '#00FF00') }, 1500),
 ])
 
-const elementFrames = animate('#my-element', [
+const elementTrail = trail('#my-element', [
     delay(500),
     set({ display: ['none', 'block'] }),
     fromTo(
@@ -57,9 +57,9 @@ const elementFrames = animate('#my-element', [
     ),
 ])
 
-const frames = parallel([bodyFrames, elementFrames])
+const parallelTrail = parallel([bodyTrail, elementTrail])
 
-const animation = lightning(frames, {
+const animation = lightTrails(parallelTrail, {
     onComplete() {
         console.log('onComplete')
         animation.play() // loop
