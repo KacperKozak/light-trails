@@ -8,8 +8,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "rm -rf dist && rollup --config",
-    "watch": "rollup --config --watch",
-    "test": "jest"
+    "watch": "rollup --config --watch"
   },
   "main": "dist/light-trails-inspector.esm.js",
   "module": "dist/light-trails-inspector.esm.js",
