@@ -1,7 +1,7 @@
 import 'core-js'
 import { trail, delay, fromTo, lightTrails, set, val } from './'
 
-describe('lightning', () => {
+describe('lightTrails', () => {
     const values = { a: null, b: null }
 
     const mainTrail = trail(frameValues => Object.assign(values, frameValues), [

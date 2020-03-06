@@ -18,6 +18,11 @@ const colorFromRGB = (color: string): Color => {
 
 const getColor = (color: string): Color => {
     if (color.startsWith('#')) {
+        if (color.length === 4) {
+            const [, r, g, b] = color
+            const longHex = '#' + r + r + g + g + b + b
+            return colorFromHEX(longHex)
+        }
         return colorFromHEX(color)
     }
 
