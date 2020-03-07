@@ -33,9 +33,9 @@ const getColor = (color: string): Color => {
     throw new Error(`[lighting:color] Unknown color "${color}", use hex, rgb or rgba`)
 }
 
-export const color = (color1: string, color2: string) => {
-    const c1 = getColor(color1)
-    const c2 = getColor(color2)
+export const color = (a: string, b: string) => {
+    const c1 = getColor(a)
+    const c2 = getColor(b)
 
     return (p: number) => {
         const n = limit(p)
@@ -50,5 +50,14 @@ export const color = (color1: string, color2: string) => {
         c[3] = (c2[3] - c1[3]) * n + c1[3]
 
         return colorToString(c as Color)
+    }
+}
+
+export const colorChain = (a: string) => {
+    let pref = a
+    return (b: string) => {
+        const newVal = color(pref, b)
+        pref = b
+        return newVal
     }
 }
