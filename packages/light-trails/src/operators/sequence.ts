@@ -1,5 +1,5 @@
 import { SimpleTrailFunction } from '../types'
-import { totalDuration } from '../helpers'
+import { totalDuration } from '../timeline/totalDuration'
 
 export const sequence = (
     frames: SimpleTrailFunction[],

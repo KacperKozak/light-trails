@@ -1,4 +1,3 @@
-import { linear } from '../helpers'
 import {
     Easing,
     SimpleTrailFunction,
@@ -7,11 +6,12 @@ import {
     SetValues,
     TweenValues,
 } from '../types'
+import { easeInOut } from '../easings'
 
 export const fromTo = (
     values: TweenValues,
     duration: number,
-    easing: Easing = linear,
+    easing: Easing = easeInOut,
 ): RenderTrailFunction => startAt => renderer => [
     {
         type: FrameType.Tween,

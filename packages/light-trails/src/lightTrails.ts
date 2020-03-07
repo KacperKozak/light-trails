@@ -1,4 +1,4 @@
-import { totalDuration } from './helpers'
+import { totalDuration } from './timeline/totalDuration'
 import { TrailFrame, SimpleTrailFunction } from './types'
 import { render } from './timeline/render'
 import { findTextStepTime } from './timeline/findTextStepTime'
