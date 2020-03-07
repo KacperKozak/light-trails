@@ -1,6 +1,6 @@
 # Light trails
 
-![TypeScript](https://img.shields.io/npm/types/typescript) ![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg) ![bundle size](https://img.shields.io/bundlephobia/min/light-trails) ![min zip bundle size](https://img.shields.io/bundlephobia/minzip/light-trails) ![CI](https://github.com/KacperKozak/light-trails/workflows/CI/badge.svg)
+![TypeScript](https://img.shields.io/npm/types/typescript) ![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg) ![bundle size](https://img.shields.io/bundlephobia/min/light-trails) ![min zip bundle size](https://img.shields.io/bundlephobia/minzip/light-trails) ![npm](https://img.shields.io/npm/v/light-trails?label=light-trails) ![npm](https://img.shields.io/npm/v/light-trails-inspector?label=light-trails-inspector) ![CI](https://github.com/KacperKozak/light-trails/workflows/CI/badge.svg)
 
 
 The extendable animation library with timeline inspector.
