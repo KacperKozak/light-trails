@@ -18,7 +18,7 @@ export const htmlElementRenderer = (selector: HTMLElement | string): Renderer =>
     const element = selectElement(selector)
 
     const renderer: Renderer = values => {
-        const { text, x, y, scale, skewX, skewY, ...styles } = values
+        const { text, x, y, scale, skewX, skewY, rotate, ...styles } = values
 
         setCssValue(element, styles)
 
@@ -26,7 +26,7 @@ export const htmlElementRenderer = (selector: HTMLElement | string): Renderer =>
             element.textContent = text
         }
 
-        const transform = getTransform({ x, y, scale, skewX, skewY })
+        const transform = getTransform({ x, y, scale, skewX, skewY, rotate })
 
         if (transform) {
             setCssValue(element, { transform })
