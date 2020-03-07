@@ -3,7 +3,7 @@
 ![TypeScript](https://img.shields.io/npm/types/typescript) ![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg) ![bundle size](https://img.shields.io/bundlephobia/min/light-trails) ![min zip bundle size](https://img.shields.io/bundlephobia/minzip/light-trails) ![CI](https://github.com/KacperKozak/light-trails/workflows/CI/badge.svg)
 
 
-The extendable TypeScript animation library with timeline inspector
+The extendable animation library with timeline inspector.
 
 ```bash
 yarn add light-trails
@@ -24,7 +24,11 @@ const bodyTrail = trail('body', [
 
 const titleTrail = trail('#title', [
   delay(500),
-  fromTo({ opacity: val(0, 1) }, 500)
+  fromTo({
+    y: val(0, 50, 'px'),
+    opacity: val(0, 1),
+    rotate: val(0, 360, 'deg'),
+  }, 500)
 ])
 
 const animation = lightTrails(
