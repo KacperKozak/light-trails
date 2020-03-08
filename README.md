@@ -22,6 +22,30 @@ npm install light-trails
 - Rock-solid **declarative** way of doing animations
 - Build for **large animation sets** - previously as part of [Phenomenon](https://github.com/react-phenomenon/phenomenon) web slides engine, now it's a stand-alone package
 
+# TOC
+
+- [Trails](#trails)
+  - [Controller](#controller)
+  - [Composition](#composition)
+- [API](#api)
+  - [lightTrails(…)](#lighttrailstrail-options)
+    - [.play()](#play)
+    - [.pause()](#pause)
+    - [.prepare()](#prepare)
+    - [.getStatus()](#getstatus)
+  - [Trail](#trail)
+    - [Custom renderer](#custom-renderer)
+  - [Operators](#operators)
+    - [fromTo(…)](#fromtovalues-object-duration-number-easing-function)
+    - [set(…)](#setvalues-object)
+    - [delay(…)](#delayduration-number)
+    - [pause()](#pause-1)
+  - [Values](#values)
+    - [val(…)](#vala-number-b-number-suffix-string)
+    - [color(…)](#colora-string-b-string)
+    - [Value chaining](#value-chaining)
+  - [FAQ](#faq)
+
 
 # Example
 
@@ -183,9 +207,7 @@ const combinedTrails = sequence([
 ```
 
 
-
 # API
-
 
 ## `lightTrails(trail, [options])`
 
@@ -258,9 +280,10 @@ animation.getStatus()
 ```
 
 # Trail
-## `trail(renderer: string | HTMLElement | Function, operators: Array)`
 
 Combination of *renderer* and *operators* array, `string` or `HTMLElement` as render will be changed to build-in HTML/CSS renderer.
+
+`trail(renderer: string | HTMLElement | Function, operators: Array)`
 
 Example:
 
@@ -425,7 +448,12 @@ const elTrail = trail(el, [
 ])
 ```
 
-## `valChain(a: number, suffix?: string)` and `colorChain(a: string)`
+## Value chaining
+
+```ts
+valChain(a: number, suffix?: string)
+colorChain(a: string)
+```
 
 Sometimes you have to change the same value multiple times starting from the previous value, for example:
 
@@ -460,3 +488,7 @@ const elTrail = trail(el, [
   }, 200),
 ])
 ```
+
+# FAQ
+
+TODO
