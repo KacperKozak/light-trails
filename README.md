@@ -35,6 +35,10 @@ npm install light-trails
     - [.getStatus()](#getstatus)
   - [Trail](#trail)
     - [Custom renderer](#custom-renderer)
+  - [Composition](#composition-1)
+    - [parallel(…)](`#paralleltrails-array`)
+    - [sequence(…)](`#sequencetrails-array`)
+    - [cascade(…)](`#cascadetrails-array-options`)
   - [Operators](#operators)
     - [fromTo(…)](#fromtovalues-object-duration-number-easing-function)
     - [set(…)](#setvalues-object)
@@ -327,6 +331,50 @@ const myTrail = trail(
 lightTrails(myTrail).seek(500)
 
 console.log(position.x) // → 50
+```
+
+## Composition
+
+Joining trails together.
+
+### `parallel(trails: Array)`
+
+Stack trails to run at the same time
+
+```ts
+const bodyTrail = trail('body', [ … ])
+const fadeInTrail = trail('h1', [ … ])
+
+// → aaaa
+// → bbbb
+// → cccc
+const combinedTrails = parallel([bodyTrail, fadeInTrail, …])
+
+lightTrails(combinedTrails).play()
+```
+
+### `sequence(trails: Array)`
+
+Stack trails one after the other
+
+```ts
+// → aaaa
+// →     bbbb
+// →         cccc
+const combinedTrails = sequence([bodyTrail, fadeInTrail, …])
+```
+
+### `cascade(trails: Array, options)`
+
+Cascade with offset based on the index
+
+```ts
+// → aaaa
+// →   bbbb
+// →     bbbb
+const combinedTrails = cascade([bodyTrail, fadeInTrail, …], {
+  offset: (i) => i * 300
+})
 ```
 
 # Operators
