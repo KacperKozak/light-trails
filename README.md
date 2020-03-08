@@ -539,4 +539,44 @@ const elTrail = trail(el, [
 
 # FAQ
 
-TODO
+## How to loop animation?
+
+There is no built-in option for that but you can play the animation again after completion, for example:
+
+
+```ts
+const bodyTrail = trail('body', [
+  fromTo({ backgroundColor: color('#000', '#FFF') }, 1000)
+])
+
+const animation = lightTrails(bodyTrail, {
+  onComplete() {
+    animation.play()
+  }
+})
+
+animation.play()
+```
+
+## Can I use this library with React?
+
+Yep, simply use `useRef` and `useEffect` hooks:
+
+```tsx
+const MyComponent = () => {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const elTrail = trail(ref.current, [
+      fromTo({ opacity: val(0, 1) }, 1000)
+    ])
+
+    const animation = lightTrails(elTrail)
+    animation.play()
+
+    return () => animation.pause()
+  }, [])
+
+  return <div ref={ref}>Test</div>
+} 
+```
