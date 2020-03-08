@@ -1,8 +1,9 @@
-build/
-dist/
-render/
-node_modules/
-.history/
-coverage/
+build
+dist
+render
+node_modules
+.history
+coverage
+.cache
 .parcel-cache
 *.log

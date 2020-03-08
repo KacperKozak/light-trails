@@ -1,0 +1,23 @@
+{
+  "name": "page",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://kacperkozak.github.io/light-trails/",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url './'",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "light-trails": "*",
+    "light-trails-inspector": "*"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0",
+    "parcel": "^1",
+    "sass": "^1.26.2",
+    "typescript": "^3.8.3"
+  }
+}
