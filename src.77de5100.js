@@ -830,7 +830,7 @@ trailAnimations.sort(function () {
 });
 var animation = light_trails_1.lightTrails(light_trails_1.parallel([light_trails_1.cascade(trailAnimations, {
   offset: function offset(i) {
-    return i * 50;
+    return i * 30;
   }
 }), light_trails_1.sequence([light_trails_1.delay(1300), light_trails_1.cascade([titleTrail, pTrail, mainTrail], {
   offset: function offset(i) {
@@ -866,7 +866,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36259" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36261" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
