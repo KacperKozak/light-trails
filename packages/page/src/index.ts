@@ -72,7 +72,7 @@ trailAnimations.sort(() => 0.5 - Math.random())
 const animation = lightTrails(
     parallel([
         cascade(trailAnimations, {
-            offset: (i: number) => i * 50,
+            offset: (i: number) => i * 30,
         }),
         sequence([
             delay(1300),

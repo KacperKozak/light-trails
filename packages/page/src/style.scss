@@ -20,9 +20,21 @@ body {
     font-weight: 100;
 }
 
+a {
+    color: #00f0f0;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 h1 {
     font-weight: 300;
     font-size: 5em;
+}
+
+main {
+    text-align: center;
 }
 
 .top {
