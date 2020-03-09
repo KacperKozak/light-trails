@@ -565,8 +565,14 @@ var getTransform = values => {
   return val.join(' ');
 };
 
-var setCssValue = (el, value) => {
-  Object.assign(el.style, value);
+var setCssValue = (el, values) => {
+  for (var _i = 0, _Object$entries = Object.entries(values); _i < _Object$entries.length; _i++) {
+    var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+        key = _Object$entries$_i[0],
+        value = _Object$entries$_i[1];
+
+    el.style.setProperty(key, value);
+  }
 };
 
 exports.setCssValue = setCssValue;
@@ -785,6 +791,301 @@ var valChain = (a, suffix) => {
 };
 
 exports.valChain = valChain;
+},{}],"../../../node_modules/light-trails-inspector/dist/light-trails-inspector.esm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.inspector = void 0;
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+var FrameType;
+
+(function (FrameType) {
+  FrameType["Pause"] = "Pause";
+  FrameType["Delay"] = "Delay";
+  FrameType["Set"] = "Set";
+  FrameType["Tween"] = "Tween";
+})(FrameType || (FrameType = {}));
+
+var shouldSkipFrame = (currentTime, currentTimeIndex, frame) => {
+  if (frame.startAt > currentTime) return true;
+  if (frame.startAt === currentTime && frame.startIndex > currentTimeIndex) return true;
+  return false;
+};
+
+var bg = {
+  [FrameType.Tween]: '#4d7a16',
+  [FrameType.Set]: 'lightgray',
+  [FrameType.Delay]: '#666',
+  [FrameType.Pause]: 'lightgray'
+};
+
+var createBarEl = (frame, options, skipped) => {
+  var _frame$renderer;
+
+  var el = document.createElement('div');
+  var htmlPayload = 'renderer' in frame && ((_frame$renderer = frame.renderer) === null || _frame$renderer === void 0 ? void 0 : _frame$renderer.__EL) || undefined;
+
+  if (htmlPayload) {
+    el.textContent = "[".concat(htmlPayload.tagName, "] ");
+  } else {
+    el.textContent = "".concat(frame.type);
+  }
+
+  el.title = "[".concat(frame.startAt, " - ").concat(frame.startAt + frame.duration, "] ").concat(frame.type);
+
+  if ('values' in frame) {
+    var values = " (".concat(Object.keys(frame.values).join(', '), ")");
+    el.textContent += values;
+    el.title += values;
+  }
+
+  el.onclick = () => {
+    // eslint-disable-next-line no-console
+    console.log(frame);
+  };
+
+  if (htmlPayload) {
+    el.onmouseover = () => {
+      htmlPayload.style.outline = '2px solid red';
+      htmlPayload.style.outlineOffset = '2px';
+    };
+
+    el.onmouseout = () => {
+      htmlPayload.style.outline = '';
+      htmlPayload.style.outlineOffset = '';
+    };
+  }
+
+  el.style.opacity = skipped ? '0.3' : '1';
+  el.style.height = '14px';
+  el.style.lineHeight = '14px';
+  el.style.fontSize = '10px';
+  el.style.textIndent = '5px'; // el.style.overflow = 'hidden'
+
+  el.style.whiteSpace = 'nowrap';
+  el.style.marginBottom = '1px';
+  el.style.color = 'white';
+  el.style.marginLeft = frame.startAt / options.scale + 'px';
+
+  switch (frame.type) {
+    case FrameType.Pause:
+    case FrameType.Set:
+      el.style.width = 'auto';
+      el.style.color = bg[frame.type];
+      el.style.borderLeft = "2px solid ".concat(bg[frame.type]);
+      break;
+
+    default:
+      el.style.backgroundColor = bg[frame.type];
+      el.style.width = frame.duration / options.scale + 'px';
+      el.style.borderRadius = '3px';
+      break;
+  }
+
+  return el;
+};
+
+var createLineEl = options => {
+  var el = document.createElement('div');
+  el.style.position = 'absolute';
+  el.style.left = '0px';
+  el.style.top = '0';
+  el.style.bottom = '0';
+  el.style.backgroundColor = 'white';
+  el.style.width = '1px';
+  el.style.pointerEvents = 'none';
+  el.style.opacity = '0.7';
+
+  var update = timeOffset => {
+    el.style.left = "".concat(timeOffset / options.scale, "px");
+  };
+
+  return {
+    el,
+    update
+  };
+};
+
+var createRootEl = options => {
+  var el = document.createElement('div');
+  el.style.zIndex = '10000';
+  el.style.position = 'absolute';
+  el.style.fontFamily = 'monospace';
+  el.style.overflow = 'auto';
+  el.style.left = '10px';
+  el.style.bottom = '110px';
+  el.style.backgroundColor = 'rgba(0,0,0,.1)';
+  el.style.width = options.width + 'px';
+  el.style.display = 'grid';
+  el.style.gridTemplateRows = '1fr';
+  el.style.gridGap = '10px';
+  return el;
+};
+
+var createSeekEl = (options, onSeek) => {
+  var el = document.createElement('div');
+  el.style.backgroundColor = 'rgba(0,0,0,.5)';
+  el.style.height = '50px';
+  el.style.webkitUserSelect = null;
+  el.style.cursor = 'col-resize';
+  var seeking = false;
+
+  el.onmousedown = event => {
+    seeking = true;
+    onSeek(event.offsetX * options.scale);
+  };
+
+  el.onmouseup = () => {
+    seeking = false;
+  };
+
+  el.onmousemove = event => {
+    if (seeking) {
+      onSeek(event.offsetX * options.scale);
+    }
+  };
+
+  return el;
+};
+
+var round = Math.round;
+
+var createStatusEl = () => {
+  var el = document.createElement('div');
+  el.style.padding = '10px 10px 0';
+  el.style.color = 'white';
+
+  var update = status => {
+    var textStatus = status.playing ? 'Playing' : status.ended ? 'End' : "Paused (".concat(status.currentTimeIndex, ")");
+    el.innerText = "".concat(round(status.currentTime), "/").concat(status.total, " [").concat(textStatus, "]");
+  };
+
+  return {
+    el,
+    update
+  };
+};
+
+var inspectorOptions = {
+  width: window.innerWidth - 20,
+  scale: 4
+};
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+var inspector = anim => {
+  var status = anim.getStatus();
+  var rootEl = createRootEl(inspectorOptions);
+  var barsWrapperEl = document.createElement('div');
+  var statusEl = createStatusEl();
+  var lineEl = createLineEl(inspectorOptions);
+  var seekEl = createSeekEl(inspectorOptions, off => anim.seek(off));
+
+  var userOptions = _objectSpread({}, anim.__dev.options);
+
+  inspectorOptions.scale = anim.total / (inspectorOptions.width - 200);
+
+  anim.__dev.options.onUpdate = () => {
+    var _userOptions$onUpdate;
+
+    status = anim.getStatus();
+    (_userOptions$onUpdate = userOptions.onUpdate) === null || _userOptions$onUpdate === void 0 ? void 0 : _userOptions$onUpdate.call(userOptions);
+    render();
+  };
+
+  anim.__dev.options.onPause = () => {
+    var _userOptions$onPause;
+
+    status = anim.getStatus();
+    (_userOptions$onPause = userOptions.onPause) === null || _userOptions$onPause === void 0 ? void 0 : _userOptions$onPause.call(userOptions);
+    render();
+  };
+
+  anim.__dev.options.onComplete = () => {
+    var _userOptions$onComple;
+
+    status = anim.getStatus();
+    (_userOptions$onComple = userOptions.onComplete) === null || _userOptions$onComple === void 0 ? void 0 : _userOptions$onComple.call(userOptions);
+    render();
+  };
+
+  barsWrapperEl.style.maxHeight = '70vh';
+  barsWrapperEl.style.overflow = 'auto';
+
+  var render = () => {
+    barsWrapperEl.innerHTML = '';
+
+    anim.__dev.frames.forEach(frame => {
+      barsWrapperEl.appendChild(createBarEl(frame, inspectorOptions, shouldSkipFrame(status.currentTime, status.currentTimeIndex, frame)));
+    });
+
+    lineEl.update(status.currentTime);
+    lineEl.el.scrollIntoView({
+      behavior: 'auto',
+      inline: 'center',
+      block: 'center'
+    });
+    statusEl.update(status);
+  };
+
+  render();
+  rootEl.appendChild(statusEl.el);
+  rootEl.appendChild(seekEl);
+  rootEl.appendChild(barsWrapperEl);
+  rootEl.appendChild(lineEl.el);
+  document.body.appendChild(rootEl);
+};
+
+exports.inspector = inspector;
 },{}],"index.ts":[function(require,module,exports) {
 "use strict";
 
@@ -793,6 +1094,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var light_trails_1 = require("light-trails");
+
+var light_trails_inspector_1 = require("light-trails-inspector");
 
 var nextColor = light_trails_1.colorChain('#FFFFFF');
 var titleTrail = light_trails_1.trail('h1', [light_trails_1.fromTo({
@@ -809,7 +1112,7 @@ var mainTrail = light_trails_1.trail('main', [light_trails_1.delay(800), light_t
   opacity: light_trails_1.val(0, 1)
 }, 1000)]);
 var trailAnimations = [];
-var leftVal = light_trails_1.val(0, window.innerWidth, 'px');
+var leftVal = light_trails_1.val(0, 100, '%');
 var trialsCount = Math.round(window.innerWidth / 20);
 
 for (var i = 0; i < trialsCount; i++) {
@@ -828,7 +1131,7 @@ for (var i = 0; i < trialsCount; i++) {
 trailAnimations.sort(function () {
   return 0.5 - Math.random();
 });
-var animation = light_trails_1.lightTrails(light_trails_1.parallel([light_trails_1.cascade(trailAnimations, {
+var initAnimation = light_trails_1.lightTrails(light_trails_1.parallel([light_trails_1.cascade(trailAnimations, {
   offset: function offset(i) {
     return i * 30;
   }
@@ -837,8 +1140,31 @@ var animation = light_trails_1.lightTrails(light_trails_1.parallel([light_trails
     return i * 300;
   }
 })])]));
-animation.play(); // inspector(animation)
-},{"light-trails":"../../../node_modules/light-trails/dist/light-trails.esm.js"}],"../../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+initAnimation.play();
+var colorVar = light_trails_1.colorChain('#FF00F0');
+var bodyColorTrial = light_trails_1.trail('body', [light_trails_1.fromTo({
+  '--color': colorVar('#00F0F0')
+}, 1000), light_trails_1.fromTo({
+  '--color': colorVar('#FF00F0')
+}, 1000)]);
+var colorAnimation = light_trails_1.lightTrails(bodyColorTrial);
+colorAnimation.prepare();
+var total = colorAnimation.getStatus().total;
+window.addEventListener('scroll', function () {
+  var documentElement = document.documentElement,
+      body = document.body;
+  var percent = (documentElement.scrollTop || body.scrollTop) / ((documentElement.scrollHeight || body.scrollHeight) - documentElement.clientHeight);
+  colorAnimation.seek(total * percent);
+});
+var inspectorButton = document.querySelector('#inspector');
+
+var showInspector = function showInspector() {
+  light_trails_inspector_1.inspector(initAnimation);
+  inspectorButton.hidden = true;
+};
+
+inspectorButton.addEventListener('click', showInspector);
+},{"light-trails":"../../../node_modules/light-trails/dist/light-trails.esm.js","light-trails-inspector":"../../../node_modules/light-trails-inspector/dist/light-trails-inspector.esm.js"}],"../../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -866,7 +1192,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36261" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33923" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

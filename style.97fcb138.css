@@ -3,11 +3,13 @@
 }
 
 html {
-  background: linear-gradient(217deg, rgba(255, 0, 191, 0.2), rgba(255, 0, 0, 0) 70.71%), linear-gradient(127deg, rgba(0, 238, 255, 0.2), rgba(0, 255, 0, 0) 70.71%), linear-gradient(336deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 255, 0) 70.71%);
+  background: linear-gradient(217deg, rgba(255, 0, 240, 0.2), rgba(0, 0, 0, 0) 70.71%), linear-gradient(127deg, rgba(0, 240, 240, 0.2), rgba(0, 0, 0, 0) 70.71%), linear-gradient(336deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 70.71%);
   background-color: #0b0f11;
   background-repeat: no-repeat;
   background-attachment: fixed;
   height: 100%;
+  overflow-x: hidden;
+  --color: $color2;
 }
 
 body {
@@ -16,14 +18,48 @@ body {
   font-size: 16px;
   color: #f1f9ff;
   font-weight: 100;
+  --scroll-bg: transparent;
+  --scroll-thumb: rgba($color1, 0.5);
+}
+
+body::-webkit-scrollbar {
+  width: 4px;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-bg);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--scroll-bg);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
 }
 
 a {
-  color: #00f0f0;
+  color: var(--color);
   text-decoration: none;
 }
 a:hover {
   text-decoration: underline;
+}
+
+button {
+  border: 0.4pt solid var(--color);
+  color: var(--color);
+  background: none;
+  padding: 18px 30px;
+  margin-top: 20px;
+  font-family: inherit;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: 150ms all ease;
+}
+button:hover {
+  box-shadow: 0 0 5px var(--color), inset 0 0 5px var(--color);
 }
 
 h1 {
@@ -54,6 +90,7 @@ main {
 .container {
   max-width: 800px;
   margin: 0 auto;
+  min-height: 1000px;
 }
 
 /*# sourceMappingURL=/style.97fcb138.css.map */
