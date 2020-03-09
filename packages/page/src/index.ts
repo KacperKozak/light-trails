@@ -40,7 +40,7 @@ const mainTrail = trail('main', [delay(800), fromTo({ opacity: val(0, 1) }, 1000
 
 const trailAnimations: SimpleTrailFunction[] = []
 
-const leftVal = val(0, window.innerWidth, 'px')
+const leftVal = val(0, 100, '%')
 
 const trialsCount = Math.round(window.innerWidth / 20)
 
@@ -69,7 +69,7 @@ for (let i = 0; i < trialsCount; i++) {
 
 trailAnimations.sort(() => 0.5 - Math.random())
 
-const animation = lightTrails(
+const initAnimation = lightTrails(
     parallel([
         cascade(trailAnimations, {
             offset: (i: number) => i * 30,
@@ -83,6 +83,34 @@ const animation = lightTrails(
     ]),
 )
 
-animation.play()
+initAnimation.play()
 
-// inspector(animation)
+const colorVar = colorChain('#FF00F0')
+
+const bodyColorTrial = trail('body', [
+    fromTo({ '--color': colorVar('#00F0F0') }, 1000),
+    fromTo({ '--color': colorVar('#FF00F0') }, 1000),
+])
+
+const colorAnimation = lightTrails(bodyColorTrial)
+
+colorAnimation.prepare()
+const { total } = colorAnimation.getStatus()
+
+window.addEventListener('scroll', () => {
+    const { documentElement, body } = document
+
+    const percent =
+        (documentElement.scrollTop || body.scrollTop) /
+        ((documentElement.scrollHeight || body.scrollHeight) -
+            documentElement.clientHeight)
+    colorAnimation.seek(total * percent)
+})
+
+const inspectorButton = document.querySelector<HTMLButtonElement>('#inspector')
+
+const showInspector = () => {
+    inspector(initAnimation)
+    inspectorButton.hidden = true
+}
+inspectorButton.addEventListener('click', showInspector)
