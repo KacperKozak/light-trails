@@ -70,6 +70,8 @@ const getTransform = (values: Values) => {
     return val.join(' ')
 }
 
-export const setCssValue = (el: HTMLElement, value: any) => {
-    Object.assign(el.style, value)
+export const setCssValue = (el: HTMLElement, values: object) => {
+    for (const [key, value] of Object.entries(values)) {
+        el.style.setProperty(key, value)
+    }
 }
