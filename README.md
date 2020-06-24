@@ -14,13 +14,13 @@ npm install light-trails
 
 # Features
 
-- **Highly extendable** with a lot of small parts which you can replace
+- **Highly extendable** with a lot of small elements which you can replace
 - Advanced **animation inspector** as a separate package
 - Easy **composition** even for completely different renderers
 - Timeline based so you can control the animation using **seek(t)**
-- Written in **TypeScript** so it's come with pretty good typings
+- Written in **TypeScript** with pretty good typings
 - Rock-solid **declarative** way of doing animations
-- Build for **large animation sets** - previously as part of [Phenomenon](https://github.com/react-phenomenon/phenomenon) web slides engine, now it's a stand-alone package
+- Build for **large animation sets** - previously as part of [Phenomenon](https://github.com/react-phenomenon/phenomenon) web slides engine, now a stand-alone package
 
 # TOC
 
@@ -111,8 +111,8 @@ inspector(animation)
 
 ## Trails
 
-To make an animation, first of all, we have to start with `trail()` function.
-Under this name, you can find a combination of *renderer* (by default it's a HTML/CSS renderer) and set of *operators* which describes animation steps.
+First of all, to make an animation we have to start with `trail()` function.
+Under this name, you can find a combination of *renderer* (by default it's a HTML/CSS renderer) and a set of *operators* discarding animation steps.
 
 There is a example of fade in trail:
 
@@ -122,7 +122,7 @@ const fadeInTrail = trail('h1', [
 ])
 ```
 
-You are probably wondering what `fromTo()` or `val()` are.
+You are probably wander what `fromTo()` or `val()` are.
 Let me explain what's going on.
 
 The `fromTo` is one of the operators which takes an object with functions that can return a value in a specific time. Parameter `n` here is the percentage value from 0 to 1:
@@ -131,10 +131,10 @@ The `fromTo` is one of the operators which takes an object with functions that c
 fromTo({ opacity: (n) => … }, 400)
 ```
 
-For example, if the animation will be at 200ms this function will be cal with `n = 0.5`.
-It depends on how you want to change, you can make your own *value function* or use one of build-in.  The most common in are `val(0, 100, 'px')` and `color('#FFF', '#000')`.
+For example, if the animation will be at 200ms this function will be called with `n = 0.5`.
+Depending on what you want to do you can make your own *value function* or use one of build-in.  The most common are `val(0, 100, 'px')` and `color('#FFF', '#000')`.
 
-There are more operators which can work together, for example `set()` when you want to change value immediately or `delay()`:
+There are more operators which can work together, for example `set()` when you want to change a value immediately or `delay()`:
 
 ```ts
 const fadeInTrail = trail('h1', [
@@ -146,8 +146,8 @@ const fadeInTrail = trail('h1', [
 
 ## Controller
 
-Previously mentioned `trail` function carries only information about animation steps for the specific element.
-To run our animation we have to have a controller named `lightTrails` in this lib:
+Previously mentioned `trail` function carries information about animation only for the specific element.
+To run our animation we have to use controller `lightTrails`:
 
 ```ts
 const fadeInTrail = trail('h1', [
@@ -161,15 +161,14 @@ const animation = lightTrails(fadeInTrail)
 animation.play()
 ```
 
-The plural in the name reveals one of the key features of this library.
-And you guessed it. It's not about one trail, it's about composition.
+Plural function name reveals one of the key features of this library, it's not about one trail but about composition.
 
 
 ## Composition
 
-To run related trails together you can use one of many functions, the simplest ones are `sequence` and `parallel` which I think are self-explanatory.
+To run related trails together you have to use composition functions, the simplest ones are `sequence` and `parallel` which I think are self-explanatory.
 
-Let's use them in some example: We have two different trails, one for `body` background color and a second one for the `h1` fade-in animation:
+For example: we have two different trails, one for `body` background color and a second one for `h1` fade-in animation:
 
 ```ts
 const bodyTrail = trail('body', [
@@ -183,13 +182,13 @@ const fadeInTrail = trail('h1', [
 ])
 ```
 
-Assume we want to run them one after the other, let's use `sequence` function.
+Assume we want to run them one after anther, let's use `sequence` function.
 
 ```ts
 const combinedTrails = sequence([bodyTrail, fadeInTrail])
 ```
 
-Now we have a single trail so we can finally run our trail using a controller as it was before:
+Now we have a single trail so we can finally run it using a controller as before:
 
 ```ts
 const animation = lightTrails(combinedTrails)
@@ -197,7 +196,7 @@ const animation = lightTrails(combinedTrails)
 animation.play()
 ```
 
-Composition functions have exactly the same type as a trail, so you can combine them together eg `parallel` inside a `sequence`.
+Composition functions have exactly the same type as a trail, so you can combine them together e.g. `parallel` inside a `sequence`.
 
 ```ts
 const combinedTrails = sequence([
@@ -232,7 +231,7 @@ const animation = lightTrails(trail, {
 })
 ```
 
-### Returns animation instance:
+### `lightTrails` instance:
 
 #### `.play()`
 
@@ -260,7 +259,7 @@ animation.seek(200)
 
 #### `.prepare()`
 
-Prepares the animation by assigning initial values, it is useful when you do not immediately play the animation.
+Prepares the animation by assigning initial values, it is useful when you do not play the animation immediately.
 
 ```ts
 animation.prepare()
@@ -268,7 +267,7 @@ animation.prepare()
 
 #### `.getStatus()`
 ```ts
-// Returns object with current animation status
+// Return object with current animation status
 animation.getStatus()
 ```
 
@@ -285,7 +284,8 @@ animation.getStatus()
 
 # Trail
 
-Combination of *renderer* and *operators* array, `string` or `HTMLElement` as render will be changed to build-in HTML/CSS renderer.
+Trail is a combination of *renderer* function and *operators* array.
+If you put `string` or `HTMLElement` as first argument it will use build-in HTML/CSS renderer.
 
 `trail(renderer: string | HTMLElement | Function, operators: Array)`
 
@@ -295,6 +295,7 @@ Example:
 const myTrail1 = trail('#my', [ … ])
 const myTrail2 = trail(document.getElementById('my'), [ … ])
 const myTrail3 = trail(document.body, [ … ])
+const myTrail4 = trail(myCustomRendererFunction, [ … ])
 ```
 
 The second argument is an array of operators, for example:
@@ -308,7 +309,7 @@ const myTrail = trail('#my', [
 lightTrails(myTrail).play()
 ```
 
-For more information, see the "Operators" section.
+For more information, see the [operators](#operators) section.
 
 ## Custom renderer
 
@@ -335,7 +336,7 @@ console.log(position.x) // → 50
 
 ## Composition
 
-Joining trails together.
+Joins trails together.
 
 ### `parallel(trails: Array)`
 
@@ -402,7 +403,7 @@ fromTo({
 
 Sets a specific value depends on where animation head is.
 
-Values object with 2 item array (tuple)
+Values object is array with two items (tuple)
 
 ```ts
 { valueName: [any, any] }
@@ -518,7 +519,7 @@ const elTrail = trail(el, [
 ])
 ```
 
-Look at the same example but using `valChain` or `colorChain` can be useful in this case:
+Look at the next example, `valChain` or `colorChain` can be useful in this case:
 
 ```ts
 
