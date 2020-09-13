@@ -10,7 +10,8 @@
     "build": "rm -rf dist && rollup --config",
     "watch": "rollup --config --watch",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepare": "yarn build"
   },
   "main": "dist/light-trails.esm.js",
   "module": "dist/light-trails.esm.js",
