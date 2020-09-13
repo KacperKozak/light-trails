@@ -1,15 +1,19 @@
-import { totalDuration } from './timeline/totalDuration'
-import { TrailFrame, SimpleTrailFunction } from './types'
-import { render } from './timeline/render'
 import { findTextStepTime } from './timeline/findTextStepTime'
 import { prepareFrames } from './timeline/prepareFrames'
+import { render } from './timeline/render'
+import { totalDuration } from './timeline/totalDuration'
+import { FrameType, SimpleTrailFunction, TrailFrame } from './types'
 
 export interface LightTrailsInstance {
     prepare: () => void
     play: () => void
     pause: () => void
-    seek(t: number): void
+    seek(t: number, offsetIndex?: number): void
     getStatus(): LightingStatus
+
+    findPrevPauseTime(): number
+    findNextPauseTime(): number
+
     total: number
     __dev: {
         options: LightTrailsOptions
@@ -123,6 +127,24 @@ export const lightTrails = (
         total,
     })
 
+    const findNextPauseTime = () => {
+        const frame = frames.find(
+            frame => frame.type === FrameType.Pause && frame.startAt > currentTime,
+        )
+
+        if (frame) return frame.startAt
+        return total
+    }
+
+    const findPrevPauseTime = () => {
+        const frame = [...frames]
+            .reverse()
+            .find(frame => frame.type === FrameType.Pause && frame.startAt < currentTime)
+
+        if (frame) return frame.startAt
+        return 0
+    }
+
     return {
         prepare,
         play,
@@ -130,6 +152,8 @@ export const lightTrails = (
         seek,
         total,
         getStatus,
+        findNextPauseTime,
+        findPrevPauseTime,
         __dev: { options, frames },
     }
 }

@@ -1,5 +1,5 @@
 import 'core-js'
-import { trail, delay, fromTo, lightTrails, set, val } from './'
+import { delay, fromTo, lightTrails, pause, set, trail, val } from './'
 
 describe('lightTrails', () => {
     const values = { a: null, b: null }
@@ -23,9 +23,48 @@ describe('lightTrails', () => {
         expect(values.b).toBe(10)
     })
 
-    test('seek', () => {
-        anim.seek(anim.getStatus().total)
+    test('seek - tween', () => {
+        anim.seek(100 + 50)
+        expect(values.b).toBe(55)
+    })
+
+    test('seek - offset index', () => {
+        anim.seek(100, 0)
+        expect(values.a).toBe(0)
+        anim.seek(100, 1)
+        expect(values.a).toBe(1)
+    })
+
+    test('seek - end', () => {
+        const { total } = anim.getStatus()
+        anim.seek(total)
         expect(values.a).toBe(1)
         expect(values.b).toBe(100)
+    })
+
+    /*
+     * Pause
+     */
+
+    const pauseTrail = trail(frameValues => Object.assign(values, frameValues), [
+        delay(100),
+        pause(),
+        delay(100),
+    ])
+
+    test('findNextPause', () => {
+        const pauseAnim = lightTrails(pauseTrail)
+
+        expect(pauseAnim.findNextPauseTime()).toBe(100)
+        pauseAnim.seek(150)
+        expect(pauseAnim.findNextPauseTime()).toBe(200)
+    })
+
+    test('findPrevPause', () => {
+        const pauseAnim = lightTrails(pauseTrail)
+
+        expect(pauseAnim.findPrevPauseTime()).toBe(0)
+        pauseAnim.seek(150)
+        expect(pauseAnim.findPrevPauseTime()).toBe(100)
     })
 })

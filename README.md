@@ -33,6 +33,7 @@ npm install light-trails
     - [.pause()](#pause)
     - [.prepare()](#prepare)
     - [.getStatus()](#getstatus)
+    - [.find(Prev/Next)Pause()](#findPrevPause-and-findNextPause)
   - [Trail](#trail)
     - [Custom renderer](#custom-renderer)
   - [Composition](#composition-1)
@@ -280,6 +281,15 @@ animation.getStatus()
   currentTimeIndex: number
   total: number
 }
+```
+
+#### `.findPrevPause()` and `.findNextPause()`
+
+Finds next or prev pause time.
+
+```ts
+animation.findNextPause()
+animation.findPrevPause()
 ```
 
 # Trail
