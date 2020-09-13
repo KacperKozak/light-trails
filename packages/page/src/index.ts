@@ -107,10 +107,13 @@ window.addEventListener('scroll', () => {
     colorAnimation.seek(total * percent)
 })
 
-const inspectorButton = document.querySelector<HTMLButtonElement>('#inspector')
+const inspectorButton = document.querySelector<HTMLButtonElement>('#inspector')!
 
 const showInspector = () => {
     inspector(initAnimation)
     inspectorButton.hidden = true
 }
+
+showInspector() // TODO remove
+
 inspectorButton.addEventListener('click', showInspector)

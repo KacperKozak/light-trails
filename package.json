@@ -17,12 +17,12 @@
     "*.{ts,tsx,js}": [
       "eslint --fix",
       "prettier --write",
-      "git add"
+      "bash -c yarn typecheck"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn typecheck && lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "devDependencies": {
@@ -36,6 +36,5 @@
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "wsrun": "^5.2.0"
-  },
-  "version": "0.4.1"
+  }
 }

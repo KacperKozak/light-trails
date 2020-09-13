@@ -27,7 +27,7 @@ export const inspector = (anim: LightTrailsInstance) => {
 
     anim.__dev.options.onPause = () => {
         status = anim.getStatus()
-        userOptions.onPause?.()
+        userOptions.onPause?.(false)
         render()
     }
 
@@ -52,7 +52,8 @@ export const inspector = (anim: LightTrailsInstance) => {
             )
         })
         lineEl.update(status.currentTime)
-        lineEl.el.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'center' })
+        // TODO
+        // lineEl.el.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'center' })
         statusEl.update(status)
     }
 
