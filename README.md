@@ -222,8 +222,8 @@ const animation = lightTrails(trail, {
   onComplete() {
     // animation is completed
   },
-  onPause() {
-    // animation paused by `animation.pause()` or `pause()` operator
+  onPause(manual) {
+    // animation paused by `animation.pause()` (manual = true) or `pause()` operator
   },
   onUpdate() {
     // triggered on every frame

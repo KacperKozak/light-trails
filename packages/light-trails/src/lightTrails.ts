@@ -28,7 +28,7 @@ export interface LightingStatus {
 
 interface LightTrailsOptions {
     onPlay?(): void
-    onPause?(): void
+    onPause?(manual: boolean): void
     onComplete?(): void
     onUpdate?(): void
 }
@@ -60,6 +60,8 @@ export const lightTrails = (
     }
 
     const play = () => {
+        if (playing) return
+
         let start = 0
         playing = true
 
@@ -97,7 +99,7 @@ export const lightTrails = (
 
             if (!playing || pause) {
                 playing = false
-                options.onPause?.()
+                options.onPause?.(false)
                 return
             }
 
@@ -109,6 +111,7 @@ export const lightTrails = (
 
     const pause = () => {
         playing = false
+        options.onPause?.(true)
     }
 
     const getStatus = (): LightingStatus => ({
