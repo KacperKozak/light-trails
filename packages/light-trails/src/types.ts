@@ -3,6 +3,7 @@ export enum FrameType {
     Delay = 'Delay',
     Set = 'Set',
     Tween = 'Tween',
+    Callback = 'Callback',
 }
 
 interface TrailFrameBase {
@@ -37,11 +38,17 @@ export interface TrailFrameTween extends TrailFrameBase {
     easing: Easing
 }
 
+export interface TrailFrameAction extends TrailFrameBase {
+    type: FrameType.Callback
+    callback: (isAfter: boolean) => void
+}
+
 export type TrailFrame =
     | TrailFrameSet
     | TrailFrameTween
     | TrailFramePause
     | TrailFrameDelay
+    | TrailFrameAction
 
 export interface Values {
     [key: string]: any

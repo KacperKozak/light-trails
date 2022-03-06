@@ -8,3 +8,13 @@ export const mapValues = <T, R>(
 
 export const limit = (value: number, min = 0, max = 1) =>
     Math.min(Math.max(value, min), max)
+
+export const querySelector = (selector: string) => {
+    const element = document.querySelector(selector) as HTMLElement | null
+
+    if (!element) {
+        throw new Error(`[light-trails] Element (${selector}) not found`)
+    }
+
+    return element
+}

@@ -1,4 +1,4 @@
-import { styleRenderer } from './renderers/styleRenderer'
+import { findRenderer } from './renderers/findRenderer'
 import { Renderer, SimpleTrailFunction, TrailFunction } from './types'
 
 export const trail = (
@@ -7,38 +7,22 @@ export const trail = (
 ): SimpleTrailFunction => {
     const renderer = findRenderer(target)
 
-    return startAt => {
+    return (startAt) => {
         let offset = startAt
 
         const frames = operators
-            .map(operator => {
+            .map((operator) => {
                 let frame = operator(offset)
 
                 if (typeof frame === 'function') {
                     frame = frame(renderer)
                 }
 
-                offset += Math.max(...frame.map(frame => frame.duration))
+                offset += Math.max(...frame.map((frame) => frame.duration))
                 return frame
             })
             .flat()
 
         return frames
     }
-}
-
-const findRenderer = (target: Renderer | ElementCSSInlineStyle | string): Renderer => {
-    if (typeof target === 'function') {
-        return target
-    }
-
-    if (
-        typeof target === 'string' ||
-        target instanceof HTMLElement ||
-        target instanceof SVGElement
-    ) {
-        return styleRenderer(target)
-    }
-
-    throw new Error(`[lighting:animate] Invalid renderer (${(target as any).toString()})`)
 }

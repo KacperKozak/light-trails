@@ -1,5 +1,5 @@
 import { limit, mapValues } from '../helpers'
-import { TrailFrame, FrameType } from '../types'
+import { FrameType, TrailFrame } from '../types'
 import { shouldSkipFrame } from './shouldSkipFrame'
 
 export const render = (
@@ -11,11 +11,15 @@ export const render = (
         const frame = frames[i]
         switch (frame.type) {
             case FrameType.Tween:
-                frame.renderer(mapValues(frame.values, val => val(0)))
+                frame.renderer(mapValues(frame.values, (val) => val(0)))
                 break
 
             case FrameType.Set:
-                frame.renderer(mapValues(frame.values, val => val[0]))
+                frame.renderer(mapValues(frame.values, (val) => val[0]))
+                break
+
+            case FrameType.Callback:
+                frame.callback(false)
                 break
         }
     }
@@ -26,7 +30,7 @@ export const render = (
         switch (frame.type) {
             case FrameType.Tween:
                 frame.renderer(
-                    mapValues(frame.values, val => {
+                    mapValues(frame.values, (val) => {
                         const n = limit((currentTime - frame.startAt) / frame.duration)
                         return val(frame.easing(n))
                     }),
@@ -35,11 +39,15 @@ export const render = (
 
             case FrameType.Set:
                 frame.renderer(
-                    mapValues(frame.values, val => {
+                    mapValues(frame.values, (val) => {
                         const [off, on] = val
                         return currentTime >= frame.startAt + frame.duration ? on : off
                     }),
                 )
+                break
+
+            case FrameType.Callback:
+                frame.callback(true)
                 break
         }
     }

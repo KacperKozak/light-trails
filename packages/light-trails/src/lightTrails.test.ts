@@ -1,14 +1,13 @@
-import 'core-js'
 import { delay, fromTo, lightTrails, pause, set, trail, val } from './'
+import { action } from './operators'
 
 describe('lightTrails', () => {
     const values = { a: null, b: null }
 
-    const mainTrail = trail(frameValues => Object.assign(values, frameValues), [
-        delay(100),
-        set({ a: [0, 1] }),
-        fromTo({ b: val(10, 100) }, 100),
-    ])
+    const mainTrail = trail(
+        (frameValues) => Object.assign(values, frameValues),
+        [delay(100), set({ a: [0, 1] }), fromTo({ b: val(10, 100) }, 100)],
+    )
 
     const anim = lightTrails(mainTrail)
 
@@ -46,11 +45,10 @@ describe('lightTrails', () => {
      * Pause
      */
 
-    const pauseTrail = trail(frameValues => Object.assign(values, frameValues), [
-        delay(100),
-        pause(),
-        delay(100),
-    ])
+    const pauseTrail = trail(
+        (frameValues) => Object.assign(values, frameValues),
+        [delay(100), pause(), delay(100)],
+    )
 
     test('findNextPause', () => {
         const pauseAnim = lightTrails(pauseTrail)
@@ -66,5 +64,24 @@ describe('lightTrails', () => {
         expect(pauseAnim.findPrevPauseTime()).toBe(0)
         pauseAnim.seek(150)
         expect(pauseAnim.findPrevPauseTime()).toBe(100)
+    })
+
+    /*
+     * Action
+     */
+
+    test('action', () => {
+        const values = {}
+        const callback = jest.fn()
+        const actionTrail = trail(
+            (frameValues) => Object.assign(values, frameValues),
+            [delay(100), action(callback), delay(100)],
+        )
+        const actionAnim = lightTrails(actionTrail)
+
+        actionAnim.seek(50)
+        expect(callback).toHaveBeenCalledWith(false)
+        actionAnim.seek(150)
+        expect(callback).toHaveBeenCalledWith(true)
     })
 })

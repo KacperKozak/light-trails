@@ -1,62 +1,36 @@
 import { Renderer, Values } from '../types'
 
-export const styleRenderer = (selector: ElementCSSInlineStyle | string): Renderer => {
-    const element = selectElement(selector)
+export const styleRenderer = (element: ElementCSSInlineStyle | HTMLElement): Renderer => {
+    const renderer: Renderer = (values) => {
+        const { text, x, y, scale, scaleX, scaleY, skewX, skewY, rotate, ...styles } =
+            values
 
-    const renderer: Renderer = values => {
-            const {
-                text,
-                x,
-                y,
-                scale,
-                scaleX,
-                scaleY,
-                skewX,
-                skewY,
-                rotate,
-                ...styles
-            } = values
+        setCssValue(element, styles)
 
-            setCssValue(element, styles)
-
-            if (text !== undefined) {
-                element.textContent = text
-            }
-
-            const transform = getTransform({
-                x,
-                y,
-                scale,
-                scaleX,
-                scaleY,
-                skewX,
-                skewY,
-                rotate,
-            })
-
-            if (transform) {
-                setCssValue(element, { transform })
-            }
+        if (text !== undefined && element instanceof HTMLElement) {
+            element.textContent = text
         }
 
-        // Only for inspector
+        const transform = getTransform({
+            x,
+            y,
+            scale,
+            scaleX,
+            scaleY,
+            skewX,
+            skewY,
+            rotate,
+        })
+
+        if (transform) {
+            setCssValue(element, { transform })
+        }
+    }
+
+    // Only for inspector
     ;(renderer as any).__EL = element
 
     return renderer
-}
-
-const selectElement = (selector: ElementCSSInlineStyle | string) => {
-    if (typeof selector === 'string') {
-        const element = document.querySelector(selector) as HTMLElement | null
-
-        if (!element) {
-            throw new Error(`[lighting] Element (${selector}) not found`)
-        }
-
-        return element
-    }
-
-    return selector as HTMLElement
 }
 
 const getTransform = (values: Values) => {
@@ -98,6 +72,6 @@ const getTransform = (values: Values) => {
     return val.join(' ')
 }
 
-export const setCssValue = (el: HTMLElement, value: any) => {
+export const setCssValue = (el: ElementCSSInlineStyle, value: any) => {
     Object.assign(el.style, value)
 }
