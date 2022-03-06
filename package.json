@@ -11,7 +11,8 @@
     "build": "yarn wsrun --stages --exclude-missing build",
     "typecheck": "yarn wsrun --exclude-missing typecheck",
     "lint": "eslint  --ext .ts,.tsx,.js packages/*/src/",
-    "test": "yarn wsrun --exclude-missing test"
+    "test": "yarn wsrun --exclude-missing test",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
@@ -20,21 +21,17 @@
       "bash -c yarn typecheck"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.22.0",
-    "@typescript-eslint/parser": "^2.22.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-jest": "^23.8.1",
-    "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^4.2.3",
-    "lint-staged": "^10.0.8",
-    "prettier": "^1.19.1",
-    "wsrun": "^5.2.0"
+    "@parcel/transformer-sass": "2.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^12.3.5",
+    "prettier": "^2.5.1",
+    "wsrun": "^5.2.4"
   }
 }

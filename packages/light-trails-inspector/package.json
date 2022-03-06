@@ -17,11 +17,11 @@
     "light-trails": "*"
   },
   "devDependencies": {
-    "@wessberg/rollup-plugin-ts": "^1.2.19",
-    "core-js": "^3.6.4",
-    "jest": "^25.1.0",
-    "rollup": "^1.32.0",
+    "core-js": "^3.21.1",
+    "jest": "^27.5.1",
+    "rollup": "^2.69.1",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "typescript": "^3.8.3"
+    "rollup-plugin-ts": "^2.0.5",
+    "typescript": "^4.6.2"
   }
 }
