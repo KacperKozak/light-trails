@@ -1,8 +1,8 @@
-import { SimpleTrailFunction, TrailFunction, Renderer } from './types'
-import { htmlElementRenderer } from './renderers/htmlElementRenderer'
+import { styleRenderer } from './renderers/styleRenderer'
+import { Renderer, SimpleTrailFunction, TrailFunction } from './types'
 
 export const trail = (
-    target: Renderer | HTMLElement | string,
+    target: Renderer | ElementCSSInlineStyle | string,
     operators: TrailFunction[],
 ): SimpleTrailFunction => {
     const renderer = findRenderer(target)
@@ -27,14 +27,18 @@ export const trail = (
     }
 }
 
-const findRenderer = (target: Renderer | HTMLElement | string): Renderer => {
+const findRenderer = (target: Renderer | ElementCSSInlineStyle | string): Renderer => {
     if (typeof target === 'function') {
         return target
     }
 
-    if (typeof target === 'string' || target instanceof HTMLElement) {
-        return htmlElementRenderer(target)
+    if (
+        typeof target === 'string' ||
+        target instanceof HTMLElement ||
+        target instanceof SVGElement
+    ) {
+        return styleRenderer(target)
     }
 
-    throw new Error(`[lighting:animate] Invalid renderer (${target!.toString()})`)
+    throw new Error(`[lighting:animate] Invalid renderer (${(target as any).toString()})`)
 }
