@@ -1,6 +1,6 @@
 {
   "name": "light-trails",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "The extendable TypeScript animation library",
   "repository": "https://github.com/KacperKozak/light-trails",
   "author": "Kacper Kozak",
