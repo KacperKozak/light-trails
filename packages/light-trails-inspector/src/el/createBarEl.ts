@@ -6,6 +6,7 @@ const bg: Record<FrameType, string> = {
     [FrameType.Set]: 'lightgray',
     [FrameType.Delay]: '#666',
     [FrameType.Pause]: 'lightgray',
+    [FrameType.Callback]: 'darkgray',
 }
 
 export const createBarEl = (
