@@ -1,4 +1,4 @@
-# Lighting
+# Light Trails
 
 The extendable animation library with timeline inspector.
 
