@@ -1,0 +1,23 @@
+Docs:
+  - 'packages/page/**'
+
+Lib:
+  - 'packages/light-trails/**'
+
+Inspector:
+  - 'packages/light-trails-inspector/**'
+
+Node Dependencies:
+  - '**/package.json'
+  - '**/yarn.lock'
+
+Readme:
+  - '**/README.md'
+
+Dev environment:
+  - '**/.editorconfig'
+  - '**/.eslintrc.js'
+  - '**/.gitignore'
+  - '**/.prettierrc.js'
+  - '**/.pretterignore'
+  - '**/tsconfig.json'
