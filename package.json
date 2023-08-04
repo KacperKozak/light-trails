@@ -12,6 +12,7 @@
     "typecheck": "yarn wsrun --exclude-missing typecheck",
     "lint": "eslint  --ext .ts,.tsx,.js packages/*/src/",
     "test": "yarn wsrun --exclude-missing test",
+    "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -31,7 +32,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.0",
     "lint-staged": "^12.3.5",
-    "prettier": "^2.5.1",
+    "prettier": "^3.0.1",
     "wsrun": "^5.2.4"
   }
 }

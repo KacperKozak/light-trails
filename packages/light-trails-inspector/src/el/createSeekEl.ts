@@ -13,7 +13,7 @@ export const createSeekEl = (
 
     let seeking = false
 
-    el.onmousedown = event => {
+    el.onmousedown = (event) => {
         seeking = true
         onSeek(event.offsetX * options.scale)
     }
@@ -22,7 +22,7 @@ export const createSeekEl = (
         seeking = false
     }
 
-    el.onmousemove = event => {
+    el.onmousemove = (event) => {
         if (seeking) {
             onSeek(event.offsetX * options.scale)
         }
