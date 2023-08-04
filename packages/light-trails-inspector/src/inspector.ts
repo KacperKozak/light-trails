@@ -13,7 +13,7 @@ export const inspector = (anim: LightTrailsInstance) => {
     const barsWrapperEl = document.createElement('div')
     const statusEl = createStatusEl()
     const lineEl = createLineEl(inspectorOptions)
-    const seekEl = createSeekEl(inspectorOptions, off => anim.seek(off))
+    const seekEl = createSeekEl(inspectorOptions, (off) => anim.seek(off))
 
     const userOptions = { ...anim.__dev.options }
 
@@ -42,7 +42,7 @@ export const inspector = (anim: LightTrailsInstance) => {
 
     const render = () => {
         barsWrapperEl.innerHTML = ''
-        anim.__dev.frames.forEach(frame => {
+        anim.__dev.frames.forEach((frame) => {
             barsWrapperEl.appendChild(
                 createBarEl(
                     frame,

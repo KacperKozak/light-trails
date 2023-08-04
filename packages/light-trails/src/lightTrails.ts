@@ -129,7 +129,7 @@ export const lightTrails = (
 
     const findNextPauseTime = () => {
         const frame = frames.find(
-            frame => frame.type === FrameType.Pause && frame.startAt > currentTime,
+            (frame) => frame.type === FrameType.Pause && frame.startAt > currentTime,
         )
 
         if (frame) return frame.startAt
@@ -139,7 +139,9 @@ export const lightTrails = (
     const findPrevPauseTime = () => {
         const frame = [...frames]
             .reverse()
-            .find(frame => frame.type === FrameType.Pause && frame.startAt < currentTime)
+            .find(
+                (frame) => frame.type === FrameType.Pause && frame.startAt < currentTime,
+            )
 
         if (frame) return frame.startAt
         return 0
