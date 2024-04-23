@@ -6,6 +6,8 @@
 The extendable and framework agnostic animation library with timeline inspector.
 
 ```bash
+pnpm add light-trails
+# or
 yarn add light-trails
 # or
 npm install light-trails
