@@ -3,7 +3,7 @@
 ![TypeScript](https://img.shields.io/npm/types/typescript) ![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg) ![bundle size](https://img.shields.io/bundlephobia/min/light-trails) ![min zip bundle size](https://img.shields.io/bundlephobia/minzip/light-trails) ![npm](https://img.shields.io/npm/v/light-trails?label=light-trails) ![npm](https://img.shields.io/npm/v/light-trails-inspector?label=light-trails-inspector) ![CI](https://github.com/KacperKozak/light-trails/workflows/CI/badge.svg)
 
 
-The extendable and framework agnostic animation library with timeline inspector.
+The extendable and framework-agnostic animation library with a timeline inspector.
 
 ```bash
 pnpm add light-trails
@@ -19,7 +19,7 @@ npm install light-trails
 - **Highly extendable** with a lot of small elements which you can replace
 - Advanced **animation inspector** as a separate package
 - Easy **composition** even for completely different renderers
-- Timeline based so you can control the animation using **seek(t)**
+- Timeline-based so you can control the animation using **seek(t)**
 - Written in **TypeScript** with pretty good typings
 - Rock-solid **declarative** way of doing animations
 - Build for **large animation sets** - previously as part of [Phenomenon](https://github.com/react-phenomenon/phenomenon) web slides engine, now a stand-alone package
@@ -89,7 +89,7 @@ animation.play()
 
 ## Inspector
 
-First you have to install inspector:
+First, you have to install the inspector:
 
 ```bash
 yarn add --dev light-trails-inspector
@@ -114,10 +114,10 @@ inspector(animation)
 
 ## Trails
 
-First of all, to make an animation we have to start with `trail()` function.
-Under this name, you can find a combination of *renderer* (by default it's a HTML/CSS renderer) and a set of *operators* discarding animation steps.
+First, we must start with the `trail()` function to make an animation.
+Under this name, you can find a combination of *renderer* (by default it's an HTML/CSS renderer) and a set of *operators* discarding animation steps.
 
-There is a example of fade in trail:
+There is an example of a fade-in trail:
 
 ```ts
 const fadeInTrail = trail('h1', [
@@ -125,19 +125,19 @@ const fadeInTrail = trail('h1', [
 ])
 ```
 
-You are probably wander what `fromTo()` or `val()` are.
+You are probably wondering what `fromTo()` or `val()` are.
 Let me explain what's going on.
 
-The `fromTo` is one of the operators which takes an object with functions that can return a value in a specific time. Parameter `n` here is the percentage value from 0 to 1:
+The `fromTo` is one of the operators that takes an object with functions that can return a value within a specific time. Parameter `n` here is the percentage value from 0 to 1:
 
 ```ts
 fromTo({ opacity: (n) => … }, 400)
 ```
 
-For example, if the animation will be at 200ms this function will be called with `n = 0.5`.
-Depending on what you want to do you can make your own *value function* or use one of build-in.  The most common are `val(0, 100, 'px')` and `color('#FFF', '#000')`.
+For example, if the animation is 200ms, this function will be called with `n = 0.5`.
+Depending on your preference, you can make your own *value function* or use one of the built-in ones.  The most common are `val(0, 100, 'px')` and `color('#FFF', '#000')`.
 
-There are more operators which can work together, for example `set()` when you want to change a value immediately or `delay()`:
+There are more operators that can work together, for example, `set()` when you want to change a value immediately, or `delay()`:
 
 ```ts
 const fadeInTrail = trail('h1', [
@@ -149,8 +149,8 @@ const fadeInTrail = trail('h1', [
 
 ## Controller
 
-Previously mentioned `trail` function carries information about animation only for the specific element.
-To run our animation we have to use controller `lightTrails`:
+Previously mentioned, the `trail` function carries information about animation only for specific elements.
+To run our animation, we have to use the controller `lightTrails`:
 
 ```ts
 const fadeInTrail = trail('h1', [
@@ -164,14 +164,14 @@ const animation = lightTrails(fadeInTrail)
 animation.play()
 ```
 
-Plural function name reveals one of the key features of this library, it's not about one trail but about composition.
+A plural function name reveals one of this library's key features: it's not about one trail but about composition.
 
 
 ## Composition
 
-To run related trails together you have to use composition functions, the simplest ones are `sequence` and `parallel` which I think are self-explanatory.
+To run related trails together, you have to use composition functions. The simplest ones are `sequence` and `parallel`, which I think are self-explanatory.
 
-For example: we have two different trails, one for `body` background color and a second one for `h1` fade-in animation:
+For example, we have two different trails, one for `body` background color and a second one for `h1` fade-in animation:
 
 ```ts
 const bodyTrail = trail('body', [
@@ -185,13 +185,13 @@ const fadeInTrail = trail('h1', [
 ])
 ```
 
-Assume we want to run them one after anther, let's use `sequence` function.
+Assume we want to run them one after another, let's use the `sequence` function.
 
 ```ts
 const combinedTrails = sequence([bodyTrail, fadeInTrail])
 ```
 
-Now we have a single trail so we can finally run it using a controller as before:
+Now we have a single trail, so we can finally run it using a controller as before:
 
 ```ts
 const animation = lightTrails(combinedTrails)
@@ -199,7 +199,7 @@ const animation = lightTrails(combinedTrails)
 animation.play()
 ```
 
-Composition functions have exactly the same type as a trail, so you can combine them together e.g. `parallel` inside a `sequence`.
+Composition functions have exactly the same type as a trail so that you can combine them together e.g. `parallel` inside a `sequence`.
 
 ```ts
 const combinedTrails = sequence([
